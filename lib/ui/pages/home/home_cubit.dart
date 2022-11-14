@@ -35,4 +35,13 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(loadListBreeds: LoadStatus.failure));
     }
   }
+
+  void setSearching() {
+    emit(
+        state.copyWith(isSearching: state.isSearching ?? false ? false : true));
+  }
+
+  void setTextSearch(String value) {
+    emit(state.copyWith(textSearch: value));
+  }
 }
