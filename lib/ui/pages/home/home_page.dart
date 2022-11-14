@@ -201,14 +201,14 @@ class _HomePageChillState extends State<HomePageChill> {
   Widget buildListSearch(List<Breed> list, String textSearch) {
     List<Breed> resultSearch = [];
     for (var e in list) {
-      if (e!.key!.contains(textSearch)) {
+      if (e.key!.contains(textSearch)) {
         resultSearch.add(e);
       }
     }
     return ListView.builder(
       itemCount: resultSearch.length,
       itemBuilder: (context, index) {
-        var breed = resultSearch[index]!;
+        var breed = resultSearch[index];
         return GestureDetector(
           onTap: () {
             print("tappp -${breed.key} ");
