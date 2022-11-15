@@ -1,9 +1,10 @@
 import 'package:dog_app/common/app_text_styles.dart';
-import 'package:dog_app/models/enums/load_status.dart';
+import 'package:dog_app/models/enums/load_status.dart' as Load;
 import 'package:dog_app/ui/pages/home/home_cubit.dart';
 import 'package:dog_app/ui/pages/home/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // class DetailBreedPage extends StatelessWidget {
 //   const DetailBreedPage({super.key});
@@ -39,6 +40,18 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
     // homeCubit.fetchListBreedsImg();
   }
 
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  void _onRefresh() async {
+    homeCubit.fetchListBreedsImg();
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    homeCubit.updatePage();
+    homeCubit.loadMore();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,44 +59,50 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
           bloc: homeCubit,
           builder: (context, state) {
             if (state.getImg) {
-              if (state.loadListImg == LoadStatus.failure) {
+              if (state.loadListImg == Load.LoadStatus.failure) {
                 return const Text('faild to load');
-              } else if (state.loadListImg == LoadStatus.loading) {
-                print('loading list');
+              } else if (state.loadListImg == Load.LoadStatus.loading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else {
                 return Column(children: [
                   Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: state.listBreedsImg.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          color: Colors.greenAccent.withOpacity(0.3),
-                          child: Center(
-                              child: Image.network(state.listBreedsImg[index])),
-                        );
-                      },
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      homeCubit.updatePage();
-                      homeCubit.loadMore();
-                    },
-                    child: Container(
-                      height: 50,
-                      child: Text(
-                        'Load More',
-                        style: AppTextStyle.greyS16Bold,
+                    child: SmartRefresher(
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      enablePullUp: true,
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: state.listBreedsImg.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            color: Colors.greenAccent.withOpacity(0.3),
+                            child: Center(
+                                child:
+                                    Image.network(state.listBreedsImg[index])),
+                          );
+                        },
                       ),
                     ),
                   ),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     homeCubit.updatePage();
+                  //     homeCubit.loadMore();
+                  //   },
+                  //   child: Container(
+                  //     height: 50,
+                  //     child: Text(
+                  //       'Load More',
+                  //       style: AppTextStyle.greyS16Bold,
+                  //     ),
+                  //   ),
+                  // ),
                 ]);
               }
             } else {

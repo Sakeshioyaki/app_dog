@@ -89,6 +89,7 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(loadListImg: LoadStatus.failure));
     }
     // setGetIMg();
+    emit(state.copyWith(page: 1));
   }
 
   Future<void> loadMore() async {
@@ -102,6 +103,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     List<dynamic> listImg = [];
     int iLate;
+    print('current page is ${state.page}');
     result.forEach((e) {
       for (int i = state.page * number - number - 1;
           i < state.page * number - 1;
