@@ -58,7 +58,8 @@ class _HomePageState extends State<HomePage> {
                           context: context,
                           useRootNavigator: false,
                           builder: (context) => StatefulBuilder(
-                            builder: (ctx, setState) => BreedListDialogPage(),
+                            builder: (ctx, setState) =>
+                                const BreedListDialogPage(),
                           ),
                         );
                       },
