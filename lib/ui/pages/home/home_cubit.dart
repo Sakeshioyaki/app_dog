@@ -86,30 +86,33 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadMore() async {
-    List<Breed> listBreeds = [];
-    state.listBreedsChoose?.forEach((e) {
-      listBreeds.add(state.listBreeds![e]);
-    });
-    int number = 10 ~/ listBreeds.length;
-    List<BreedsDetail> result =
-        await dogRes.getListBreedsDetail(breeds: listBreeds);
+    if (state.loading == false) {
+      emit(state.copyWith(loading: true));
+      List<Breed> listBreeds = [];
+      state.listBreedsChoose?.forEach((e) {
+        listBreeds.add(state.listBreeds![e]);
+      });
+      int number = 10 ~/ listBreeds.length;
+      List<BreedsDetail> result =
+          await dogRes.getListBreedsDetail(breeds: listBreeds);
 
-    List<dynamic> listImg = [];
-    for (var e in result) {
-      for (int i = state.page * number - number - 1;
-          i < state.page * number - 1;
-          i++) {
-        listImg.add(e.message?[i]);
+      List<dynamic> listImg = [];
+      for (var e in result) {
+        for (int i = state.page * number - number - 1;
+            i < state.page * number - 1;
+            i++) {
+          listImg.add(e.message?[i]);
+        }
       }
-    }
-    if (listImg.length < state.page * 10) {
-      for (int i = 1; i <= state.page * 10 - listImg.length; i++) {
-        listImg.add(result.first.message?[state.page * number + i]);
+      if (listImg.length < state.page * 10) {
+        for (int i = 1; i <= state.page * 10 - listImg.length; i++) {
+          listImg.add(result.first.message?[state.page * number + i]);
+        }
       }
-    }
 
-    listImg = listImg + state.listBreedsImg;
-    emit(state.copyWith(listBreedsImg: listImg));
+      listImg = listImg + state.listBreedsImg;
+      emit(state.copyWith(listBreedsImg: listImg, loading: false));
+    }
   }
 
   void updatePage() {
@@ -120,5 +123,9 @@ class HomeCubit extends Cubit<HomeState> {
   void setGetIMg() {
     bool need = state.getImg ? false : true;
     emit(state.copyWith(getImg: need));
+  }
+
+  bool getLoading() {
+    return state.loading ?? false;
   }
 }

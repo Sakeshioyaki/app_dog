@@ -1,10 +1,9 @@
 import 'package:dog_app/common/app_text_styles.dart';
-import 'package:dog_app/models/enums/load_status.dart' as Load;
+import 'package:dog_app/models/enums/load_status.dart' as load;
 import 'package:dog_app/ui/pages/home/home_cubit.dart';
 import 'package:dog_app/ui/pages/home/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class DetailBreedPage extends StatefulWidget {
   const DetailBreedPage({Key? key}) : super(key: key);
@@ -14,24 +13,26 @@ class DetailBreedPage extends StatefulWidget {
 
 class _DetailBreedPageState extends State<DetailBreedPage> {
   late HomeCubit homeCubit;
+  final ScrollController controller = ScrollController();
+  final int dimensEnd = 150;
 
   @override
   void initState() {
     super.initState();
     homeCubit = context.read<HomeCubit>();
+    controller.addListener(_onScroll);
   }
 
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-  void _onRefresh() async {
-    homeCubit.fetchListBreedsImg();
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async {
-    homeCubit.updatePage();
-    homeCubit.loadMore();
-    _refreshController.loadComplete();
+  void _onScroll() {
+    bool load = homeCubit.getLoading();
+    if (!controller.hasClients || load) return;
+    final reached = controller.position.pixels >
+        (controller.position.maxScrollExtent - dimensEnd);
+    if (reached) {
+      homeCubit.updatePage();
+      homeCubit.loadMore();
+      // controller.e
+    }
   }
 
   @override
@@ -41,21 +42,21 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
           bloc: homeCubit,
           builder: (context, state) {
             if (state.getImg) {
-              if (state.loadListImg == Load.LoadStatus.failure) {
+              if (state.loadListImg == load.LoadStatus.failure) {
                 return const Text('faild to load');
-              } else if (state.loadListImg == Load.LoadStatus.loading) {
+              } else if (state.loadListImg == load.LoadStatus.loading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else {
                 return Column(children: [
                   Expanded(
-                    child: SmartRefresher(
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      enablePullUp: true,
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        return homeCubit.fetchListBreedsImg();
+                      },
                       child: GridView.builder(
+                        controller: controller,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -78,6 +79,14 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
                       ),
                     ),
                   ),
+                  // SliverToBoxAdapter(
+                  // child: state.canLoadMore
+                  // ? Container(
+                  // padding: EdgeInsets.only(bottom: 16),
+                  // alignment: Alignment.center,
+                  // child: CircularProgressIndicator(),
+                  // )
+                  //     : SizedBox(),
                 ]);
               }
             } else {

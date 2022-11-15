@@ -7,6 +7,7 @@ class DetailBreedState extends Equatable {
   final List<dynamic> listBreedsImg;
   final int page;
   final List<Breed>? listBreeds;
+
   const DetailBreedState({
     this.loadListImg = LoadStatus.initial,
     this.listBreedsImg = const [],

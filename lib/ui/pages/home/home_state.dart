@@ -4,8 +4,10 @@ import 'package:equatable/equatable.dart';
 
 class HomeState extends Equatable {
   final LoadStatus loadListBreeds;
+  final LoadStatus loadMore;
   final List<Breed>? listBreeds;
   final bool? isSearching;
+  final bool? loading;
   final String? textSearch;
   final List<int>? listBreedsChoose;
 
@@ -17,6 +19,7 @@ class HomeState extends Equatable {
 
   const HomeState({
     this.loadListBreeds = LoadStatus.initial,
+    this.loadMore = LoadStatus.initial,
     this.listBreeds = const [],
     this.listBreedsChoose = const [],
     this.isSearching = false,
@@ -25,10 +28,12 @@ class HomeState extends Equatable {
     this.listBreedsImg = const [],
     this.loadListImg = LoadStatus.initial,
     this.getImg = false,
+    this.loading = false,
   });
 
   @override
   List<Object?> get props => [
+        loadMore,
         loadListBreeds,
         loadListImg,
         listBreedsChoose,
@@ -39,10 +44,12 @@ class HomeState extends Equatable {
         listBreedsImg,
         loadListImg,
         getImg,
+        loading,
       ];
 
   HomeState copyWith({
     LoadStatus? loadListBreeds,
+    LoadStatus? loadMore,
     LoadStatus? loadListImg,
     List<Breed>? listBreeds,
     List<int>? listBreedsChoose,
@@ -51,9 +58,11 @@ class HomeState extends Equatable {
     List<dynamic>? listBreedsImg,
     int? page,
     bool? getImg,
+    bool? loading,
   }) {
     return HomeState(
       loadListBreeds: loadListBreeds ?? this.loadListBreeds,
+      loadMore: loadMore ?? this.loadMore,
       loadListImg: loadListImg ?? this.loadListImg,
       listBreeds: listBreeds ?? this.listBreeds,
       listBreedsChoose: listBreedsChoose ?? this.listBreedsChoose,
@@ -62,6 +71,7 @@ class HomeState extends Equatable {
       listBreedsImg: listBreedsImg ?? this.listBreedsImg,
       page: page ?? this.page,
       getImg: getImg ?? this.getImg,
+      loading: loading ?? this.loading,
     );
   }
 }
