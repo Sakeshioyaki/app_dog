@@ -18,11 +18,9 @@ class HomeCubit extends Cubit<HomeState> {
     ));
     try {
       await Future.delayed(const Duration(seconds: 2));
-      print('load upcoming 1 ');
       final result = await dogRes.getBreedsList();
       List<Breed> list = [];
       (result.message as Map).forEach((key, value) {
-        print('key : ${key} - val: ${value}');
         list.add(Breed(key: key, subBreed: value));
       });
       emit(
@@ -32,7 +30,6 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (e) {
-      print(e);
       emit(state.copyWith(loadListBreeds: LoadStatus.failure));
     }
   }
@@ -56,8 +53,6 @@ class HomeCubit extends Cubit<HomeState> {
       loadListImg: LoadStatus.loading,
     ));
     try {
-      // await Future.delayed(const Duration(seconds: 2));
-      // print('load upcoming 1-- ${state.breeds}');
       List<Breed> listBreeds = [];
       state.listBreedsChoose?.forEach((e) {
         listBreeds.add(state.listBreeds![e]);
@@ -67,11 +62,11 @@ class HomeCubit extends Cubit<HomeState> {
           await dogRes.getListBreedsDetail(breeds: listBreeds);
 
       List<dynamic> listImg = [];
-      result.forEach((e) {
+      for (var e in result) {
         for (int i = 0; i < number; i++) {
           listImg.add(e.message?[i]);
         }
-      });
+      }
       if (listImg.length < 10) {
         for (int i = 1; i <= 10 - listImg.length; i++) {
           listImg.add(result.last.message?[number + i]);
@@ -85,10 +80,8 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (e) {
-      print(e);
       emit(state.copyWith(loadListImg: LoadStatus.failure));
     }
-    // setGetIMg();
     emit(state.copyWith(page: 1));
   }
 
@@ -102,15 +95,13 @@ class HomeCubit extends Cubit<HomeState> {
         await dogRes.getListBreedsDetail(breeds: listBreeds);
 
     List<dynamic> listImg = [];
-    int iLate;
-    print('current page is ${state.page}');
-    result.forEach((e) {
+    for (var e in result) {
       for (int i = state.page * number - number - 1;
           i < state.page * number - 1;
           i++) {
         listImg.add(e.message?[i]);
       }
-    });
+    }
     if (listImg.length < state.page * 10) {
       for (int i = 1; i <= state.page * 10 - listImg.length; i++) {
         listImg.add(result.first.message?[state.page * number + i]);
@@ -122,7 +113,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void updatePage() {
-    print('dang update --- ');
     int pageN = state.page + 1;
     emit(state.copyWith(page: pageN));
   }

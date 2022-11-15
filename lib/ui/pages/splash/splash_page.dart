@@ -30,7 +30,7 @@ class _SplashChildPageState extends State<SplashChildPage> {
   @override
   void initState() {
     super.initState();
-    context.read<SplashCubit>().DirecToHome();
+    context.read<SplashCubit>().direcToHome();
   }
 
   @override

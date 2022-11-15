@@ -6,22 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-// class DetailBreedPage extends StatelessWidget {
-//   const DetailBreedPage({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (context) {
-//         final homeCubit = RepositoryProvider.of<HomeCubit>(context);
-//         return DetailBreedCubit(
-//             dogRes: context.read<DogRepository>(), homeCubit: homeCubit);
-//       },
-//       child: const DetailBreedPage(),
-//     );
-//   }
-// }
-
 class DetailBreedPage extends StatefulWidget {
   const DetailBreedPage({Key? key}) : super(key: key);
   @override
@@ -29,15 +13,12 @@ class DetailBreedPage extends StatefulWidget {
 }
 
 class _DetailBreedPageState extends State<DetailBreedPage> {
-  // late DetailBreedCubit cubit;
   late HomeCubit homeCubit;
 
   @override
   void initState() {
     super.initState();
-    // cubit = BlocProvider.of<DetailBreedCubit>(context);
     homeCubit = context.read<HomeCubit>();
-    // homeCubit.fetchListBreedsImg();
   }
 
   final RefreshController _refreshController =
@@ -81,29 +62,22 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
                         ),
                         itemCount: state.listBreedsImg.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            color: Colors.greenAccent.withOpacity(0.3),
-                            child: Center(
-                                child:
-                                    Image.network(state.listBreedsImg[index])),
+                          return Container(
+                            margin: const EdgeInsets.all(5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                state.listBreedsImg[index],
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                              ),
+                            ),
                           );
                         },
                       ),
                     ),
                   ),
-                  // TextButton(
-                  //   onPressed: () {
-                  //     homeCubit.updatePage();
-                  //     homeCubit.loadMore();
-                  //   },
-                  //   child: Container(
-                  //     height: 50,
-                  //     child: Text(
-                  //       'Load More',
-                  //       style: AppTextStyle.greyS16Bold,
-                  //     ),
-                  //   ),
-                  // ),
                 ]);
               }
             } else {

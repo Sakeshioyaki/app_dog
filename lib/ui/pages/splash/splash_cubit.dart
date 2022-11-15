@@ -6,7 +6,7 @@ import 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   SplashCubit() : super(const SplashState());
-  void DirecToHome() async {
+  void direcToHome() async {
     await Future.delayed(const Duration(seconds: 2));
     Get.offAll(() => const HomePage());
   }

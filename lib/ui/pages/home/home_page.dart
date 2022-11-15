@@ -7,22 +7,6 @@ import 'package:dog_app/ui/pages/home/widget/breeds_list_dialog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (context) {
-//         return HomeCubit(
-//           dogRes: context.read<DogRepository>(),
-//         );
-//       },
-//       child: const HomePage(),
-//     );
-//   }
-// }
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -35,7 +19,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // final dogRepo = RepositoryProvider.of<DogRepository>(context);
     cubit = context.read<HomeCubit>();
     cubit.fetchListBreeds();
     super.initState();
@@ -70,7 +53,6 @@ class _HomePageState extends State<HomePage> {
                     height: 150,
                     child: TextButton(
                       onPressed: () async {
-                        print('tapppp');
                         await showDialog(
                           barrierDismissible: false,
                           context: context,
