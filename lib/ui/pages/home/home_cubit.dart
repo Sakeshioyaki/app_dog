@@ -12,14 +12,12 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required this.dogRes,
   }) : super(const HomeState());
-
   void fetchListBreeds() async {
     emit(state.copyWith(
       loadListBreeds: LoadStatus.loading,
     ));
     try {
       await Future.delayed(const Duration(seconds: 2));
-
       final result = await dogRes.getBreedsList();
       List<Breed> list = [];
       (result.message as Map).forEach((key, value) {
@@ -84,7 +82,6 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       emit(state.copyWith(loadListImg: LoadStatus.failure));
     }
-
     emit(state.copyWith(page: 1));
   }
 
@@ -98,7 +95,6 @@ class HomeCubit extends Cubit<HomeState> {
         await dogRes.getListBreedsDetail(breeds: listBreeds);
 
     List<dynamic> listImg = [];
-
     for (var e in result) {
       for (int i = state.page * number - number - 1;
           i < state.page * number - 1;

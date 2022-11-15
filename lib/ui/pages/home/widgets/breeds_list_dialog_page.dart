@@ -10,10 +10,10 @@ class BreedListDialogPage extends StatefulWidget {
   const BreedListDialogPage({Key? key}) : super(key: key);
 
   @override
-  State<BreedListDialogPage> createState() => BreedListDialogPageState();
+  State<BreedListDialogPage> createState() => _BreedListDialogPageState();
 }
 
-class BreedListDialogPageState extends State<BreedListDialogPage> {
+class _BreedListDialogPageState extends State<BreedListDialogPage> {
   late HomeCubit cubit;
 
   @override
@@ -31,7 +31,7 @@ class BreedListDialogPageState extends State<BreedListDialogPage> {
   Widget build(BuildContext context) {
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(
-        vertical: 55,
+        vertical: 15,
         horizontal: 15,
       ),
       backgroundColor: Colors.white,
@@ -45,57 +45,9 @@ class BreedListDialogPageState extends State<BreedListDialogPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 10),
-                    child: Container(
+                    child: SizedBox(
                       width: 280,
-                      child: TextField(
-                        textAlignVertical: TextAlignVertical.bottom,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.yellow,
-                          constraints: const BoxConstraints(
-                              minHeight: 52, maxHeight: 52),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.blueAccent,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.white, width: 1),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15.0),
-                            ),
-                          ),
-                          suffixIcon: const Padding(
-                            padding: EdgeInsets.all(17),
-                            child: Icon(
-                              Icons.search,
-                              size: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          hintText: 'Search breed here ...',
-                          hintStyle: AppTextStyle.blackS14,
-                          helperStyle: AppTextStyle.blackS14,
-                          alignLabelWithHint: false,
-                        ),
-                        style: AppTextStyle.blackS14,
-                        // onTap: (text) {},
-                        onChanged: (text) {
-                          if (state.isSearching == false) {
-                            cubit.setSearching();
-                          }
-                          if (text == '') {
-                            cubit.setSearching();
-                          } else {
-                            cubit.setTextSearch(text);
-                          }
-                        },
-                      ),
+                      child: buildSearchTextField(state),
                     ),
                   ),
                   Expanded(
@@ -112,7 +64,6 @@ class BreedListDialogPageState extends State<BreedListDialogPage> {
                         onPressed: () {
                           if (state.getImg == false) cubit.setGetIMg();
                           cubit.fetchListBreedsImg();
-
                           Navigator.pop(context);
                         },
                         child: const Icon(
@@ -141,8 +92,10 @@ class BreedListDialogPageState extends State<BreedListDialogPage> {
                 return Expanded(
                   child: state.isSearching ?? false
                       ? buildListSearch(
-                          state.listBreeds ?? [], state.textSearch ?? '')
-                      : buildListView(state),
+                          state.listBreeds ?? [],
+                          state.textSearch ?? '',
+                        )
+                      : buildListBreeds(state),
                 );
               }
             },
@@ -152,7 +105,7 @@ class BreedListDialogPageState extends State<BreedListDialogPage> {
     );
   }
 
-  Widget buildListView(HomeState state) {
+  Widget buildListBreeds(HomeState state) {
     return ListView.separated(
       itemCount: state.listBreeds?.length ?? 0,
       itemBuilder: (context, index) {
@@ -209,6 +162,55 @@ class BreedListDialogPageState extends State<BreedListDialogPage> {
       },
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(height: 20);
+      },
+    );
+  }
+
+  Widget buildSearchTextField(HomeState state) {
+    return TextField(
+      textAlignVertical: TextAlignVertical.bottom,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.yellow,
+        constraints: const BoxConstraints(minHeight: 52, maxHeight: 52),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.blueAccent,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 1),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        suffixIcon: const Padding(
+          padding: EdgeInsets.all(17),
+          child: Icon(
+            Icons.search,
+            size: 18,
+            color: Colors.black,
+          ),
+        ),
+        hintText: 'Search breed here ...',
+        hintStyle: AppTextStyle.blackS14,
+        helperStyle: AppTextStyle.blackS14,
+        alignLabelWithHint: false,
+      ),
+      style: AppTextStyle.blackS14,
+      onChanged: (text) {
+        if (state.isSearching == false) {
+          cubit.setSearching();
+        }
+        if (text == '') {
+          cubit.setSearching();
+        } else {
+          cubit.setTextSearch(text);
+        }
       },
     );
   }

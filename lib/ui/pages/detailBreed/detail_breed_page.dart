@@ -18,7 +18,6 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
   @override
   void initState() {
     super.initState();
-
     homeCubit = context.read<HomeCubit>();
   }
 
@@ -57,8 +56,6 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
                       onLoading: _onLoading,
                       enablePullUp: true,
                       child: GridView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 15),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,

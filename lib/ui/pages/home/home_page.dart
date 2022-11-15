@@ -11,10 +11,10 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   late HomeCubit cubit;
 
   @override
@@ -52,8 +52,15 @@ class HomePageState extends State<HomePage> {
                     alignment: Alignment.bottomLeft,
                     height: 150,
                     child: TextButton(
-                      onPressed: () {
-                        showDialogFilter();
+                      onPressed: () async {
+                        await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          useRootNavigator: false,
+                          builder: (context) => StatefulBuilder(
+                            builder: (ctx, setState) => BreedListDialogPage(),
+                          ),
+                        );
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -72,26 +79,11 @@ class HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              const Expanded(
-                child: DetailBreedPage(),
-              ),
+              const Expanded(child: Center(child: DetailBreedPage())),
             ],
           ),
         );
       },
-    );
-  }
-
-  void showDialogFilter() async {
-    await showDialog(
-      barrierDismissible: false,
-      context: context,
-      useRootNavigator: false,
-      builder: (context) => StatefulBuilder(
-        builder: (ctx, setState) {
-          return const BreedListDialogPage();
-        },
-      ),
     );
   }
 }
