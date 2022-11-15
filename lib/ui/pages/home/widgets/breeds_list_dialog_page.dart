@@ -6,37 +6,19 @@ import 'package:dog_app/ui/pages/home/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// class BreedListDialogPage extends StatelessWidget {
-//   const BreedListDialogPage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (context) {
-//         return HomeCubit(
-//           dogRes: context.read<DogRepository>(),
-//         );
-//       },
-//       child: const BreedListDialogPage(),
-//     );
-//   }
-// }
-
 class BreedListDialogPage extends StatefulWidget {
   const BreedListDialogPage({Key? key}) : super(key: key);
 
   @override
-  State<BreedListDialogPage> createState() => _BreedListDialogPageState();
+  State<BreedListDialogPage> createState() => BreedListDialogPageState();
 }
 
-class _BreedListDialogPageState extends State<BreedListDialogPage> {
+class BreedListDialogPageState extends State<BreedListDialogPage> {
   late HomeCubit cubit;
 
   @override
   void initState() {
-    // final dogRepo = RepositoryProvider.of<DogRepository>(context);
     cubit = context.read<HomeCubit>();
-    // cubit.fetchListBreeds();
     super.initState();
   }
 
@@ -49,7 +31,7 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
   Widget build(BuildContext context) {
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(
-        vertical: 15,
+        vertical: 55,
         horizontal: 15,
       ),
       backgroundColor: Colors.white,
@@ -61,7 +43,8 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
               return Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Container(
                       width: 280,
                       child: TextField(
@@ -151,7 +134,6 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
               if (state.loadListBreeds == LoadStatus.failure) {
                 return const Text('faild to load');
               } else if (state.loadListBreeds == LoadStatus.loading) {
-                print('loading list');
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -160,75 +142,74 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
                   child: state.isSearching ?? false
                       ? buildListSearch(
                           state.listBreeds ?? [], state.textSearch ?? '')
-                      : ListView.separated(
-                          itemCount: state.listBreeds?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print(
-                                      "tappp -${state.listBreeds?[index].key} ");
-                                  cubit.setChooseBreed(index);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                    horizontal: 5,
-                                  ),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.greenAccent,
-                                    border: Border.all(color: Colors.black12),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 5,
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            state.listBreeds?[index].key ?? '',
-                                            style: AppTextStyle.blackS24,
-                                          ),
-                                        ),
-                                      ),
-                                      state.listBreedsChoose?.contains(index) ??
-                                              false
-                                          ? const Icon(
-                                              Icons.check_box,
-                                              size: 25,
-                                              color: Colors.black,
-                                            )
-                                          : const Icon(
-                                              Icons.check_box_outline_blank,
-                                              size: 25,
-                                              color: Colors.black,
-                                            ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(height: 20);
-                          },
-                        ),
+                      : buildListView(state),
                 );
               }
             },
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildListView(HomeState state) {
+    return ListView.separated(
+      itemCount: state.listBreeds?.length ?? 0,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: GestureDetector(
+            onTap: () {
+              cubit.setChooseBreed(index);
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 5,
+                horizontal: 5,
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.greenAccent,
+                border: Border.all(color: Colors.black12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        state.listBreeds?[index].key ?? '',
+                        style: AppTextStyle.blackS24,
+                      ),
+                    ),
+                  ),
+                  state.listBreedsChoose?.contains(index) ?? false
+                      ? const Icon(
+                          Icons.check_box,
+                          size: 25,
+                          color: Colors.black,
+                        )
+                      : const Icon(
+                          Icons.check_box_outline_blank,
+                          size: 25,
+                          color: Colors.black,
+                        ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(height: 20);
+      },
     );
   }
 
@@ -245,7 +226,6 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
         var breed = resultSearch[index];
         return GestureDetector(
           onTap: () {
-            print("tappp -${breed.key} ");
             cubit.setChooseBreed(index);
           },
           child: Container(

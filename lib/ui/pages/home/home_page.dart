@@ -3,39 +3,22 @@ import 'package:dog_app/common/app_text_styles.dart';
 import 'package:dog_app/ui/pages/detailBreed/detail_breed_page.dart';
 import 'package:dog_app/ui/pages/home/home_cubit.dart';
 import 'package:dog_app/ui/pages/home/home_state.dart';
-import 'package:dog_app/ui/pages/home/widget/breeds_list_dialog_page.dart';
+import 'package:dog_app/ui/pages/home/widgets/breeds_list_dialog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// class HomePage extends StatelessWidget {
-//   const HomePage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (context) {
-//         return HomeCubit(
-//           dogRes: context.read<DogRepository>(),
-//         );
-//       },
-//       child: const HomePage(),
-//     );
-//   }
-// }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   late HomeCubit cubit;
 
   @override
   void initState() {
-    // final dogRepo = RepositoryProvider.of<DogRepository>(context);
     cubit = context.read<HomeCubit>();
     cubit.fetchListBreeds();
     super.initState();
@@ -69,16 +52,8 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment.bottomLeft,
                     height: 150,
                     child: TextButton(
-                      onPressed: () async {
-                        print('tapppp');
-                        await showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          useRootNavigator: false,
-                          builder: (context) => StatefulBuilder(
-                            builder: (ctx, setState) => BreedListDialogPage(),
-                          ),
-                        );
+                      onPressed: () {
+                        showDialogFilter();
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -97,11 +72,26 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              const Expanded(child: Center(child: DetailBreedPage())),
+              const Expanded(
+                child: DetailBreedPage(),
+              ),
             ],
           ),
         );
       },
+    );
+  }
+
+  void showDialogFilter() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      useRootNavigator: false,
+      builder: (context) => StatefulBuilder(
+        builder: (ctx, setState) {
+          return const BreedListDialogPage();
+        },
+      ),
     );
   }
 }

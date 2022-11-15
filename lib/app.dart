@@ -34,28 +34,28 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    //Setup PortraitUp only
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<DogRepository>(create: (context) {
+          return DogRepositoryImpl(apiClient: _apiClient);
+        }),
+      ],
+      child: MultiBlocProvider(
         providers: [
-          RepositoryProvider<DogRepository>(create: (context) {
-            return DogRepositoryImpl(apiClient: _apiClient);
+          BlocProvider<HomeCubit>(create: (context) {
+            final dogRepo = RepositoryProvider.of<DogRepository>(context);
+            return HomeCubit(dogRes: dogRepo);
           }),
         ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<HomeCubit>(create: (context) {
-              final dogRepo = RepositoryProvider.of<DogRepository>(context);
-              return HomeCubit(dogRes: dogRepo);
-            }),
-          ],
-          child: GetMaterialApp(
-            title: AppConfigs.appName,
-            initialRoute: RouteConfig.splash,
-            getPages: RouteConfig.getPages,
-          ),
-        ));
+        child: GetMaterialApp(
+          title: AppConfigs.appName,
+          initialRoute: RouteConfig.splash,
+          getPages: RouteConfig.getPages,
+        ),
+      ),
+    );
   }
 }

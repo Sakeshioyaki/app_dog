@@ -22,15 +22,15 @@ class SplashChildPage extends StatefulWidget {
   const SplashChildPage({Key? key}) : super(key: key);
 
   @override
-  State<SplashChildPage> createState() => _SplashChildPageState();
+  State<SplashChildPage> createState() => SplashChildPageState();
 }
 
-class _SplashChildPageState extends State<SplashChildPage> {
+class SplashChildPageState extends State<SplashChildPage> {
   late SplashCubit cubit;
   @override
   void initState() {
     super.initState();
-    context.read<SplashCubit>().DirecToHome();
+    context.read<SplashCubit>().direcToHome();
   }
 
   @override
