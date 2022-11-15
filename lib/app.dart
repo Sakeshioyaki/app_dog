@@ -1,6 +1,7 @@
 import 'package:dog_app/network/api_client.dart';
 import 'package:dog_app/network/api_util.dart';
 import 'package:dog_app/repositories/dog_repository.dart';
+import 'package:dog_app/ui/pages/home/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,16 +39,23 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
     ]);
     return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<DogRepository>(create: (context) {
-          return DogRepositoryImpl(apiClient: _apiClient);
-        }),
-      ],
-      child: GetMaterialApp(
-        title: AppConfigs.appName,
-        initialRoute: RouteConfig.splash,
-        getPages: RouteConfig.getPages,
-      ),
-    );
+        providers: [
+          RepositoryProvider<DogRepository>(create: (context) {
+            return DogRepositoryImpl(apiClient: _apiClient);
+          }),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<HomeCubit>(create: (context) {
+              final dogRepo = RepositoryProvider.of<DogRepository>(context);
+              return HomeCubit(dogRes: dogRepo);
+            }),
+          ],
+          child: GetMaterialApp(
+            title: AppConfigs.appName,
+            initialRoute: RouteConfig.splash,
+            getPages: RouteConfig.getPages,
+          ),
+        ));
   }
 }

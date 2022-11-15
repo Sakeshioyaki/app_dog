@@ -1,3 +1,4 @@
+import 'package:dog_app/models/breed/breed.dart';
 import 'package:dog_app/models/enums/load_status.dart';
 import 'package:equatable/equatable.dart';
 
@@ -5,12 +6,12 @@ class DetailBreedState extends Equatable {
   final LoadStatus loadListImg;
   final List<dynamic> listBreedsImg;
   final int page;
-  final String? breeds;
+  final List<Breed>? listBreeds;
   const DetailBreedState({
     this.loadListImg = LoadStatus.initial,
     this.listBreedsImg = const [],
     this.page = 1,
-    this.breeds = '',
+    this.listBreeds = const [],
   });
 
   @override
@@ -18,19 +19,19 @@ class DetailBreedState extends Equatable {
         loadListImg,
         listBreedsImg,
         page,
-        breeds,
+        listBreeds,
       ];
 
   DetailBreedState copyWith(
       {LoadStatus? loadListImg,
       List<dynamic>? listBreedsImg,
       int? page,
-      String? breeds}) {
+      List<Breed>? listBreeds}) {
     return DetailBreedState(
       loadListImg: loadListImg ?? this.loadListImg,
       listBreedsImg: listBreedsImg ?? this.listBreedsImg,
       page: page ?? this.page,
-      breeds: breeds ?? this.breeds,
+      listBreeds: listBreeds ?? this.listBreeds,
     );
   }
 }

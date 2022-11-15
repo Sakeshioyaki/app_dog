@@ -8,6 +8,6 @@ class SplashCubit extends Cubit<SplashState> {
   SplashCubit() : super(const SplashState());
   void DirecToHome() async {
     await Future.delayed(const Duration(seconds: 2));
-    Get.offAll(() => const HomePageChill());
+    Get.offAll(() => const HomePage());
   }
 }

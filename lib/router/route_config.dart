@@ -13,7 +13,7 @@ class RouteConfig {
   ///Alias ​​mapping page
   static final List<GetPage> getPages = [
     GetPage(name: splash, page: () => const SplashPage()),
-    GetPage(name: home, page: () => const HomePageChill()),
-    GetPage(name: detailBreed, page: () => const HomePageChill()),
+    GetPage(name: home, page: () => const HomePage()),
+    // GetPage(name: detailBreed, page: () => const DetailBreedPage(title: title)),
   ];
 }
