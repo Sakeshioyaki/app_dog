@@ -50,6 +50,7 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
   void _onLoading() async {
     homeCubit.updatePage();
     homeCubit.loadMore();
+    _refreshController.loadComplete();
   }
 
   @override
