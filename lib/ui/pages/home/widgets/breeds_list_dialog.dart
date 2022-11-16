@@ -6,14 +6,14 @@ import 'package:dog_app/ui/pages/home/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BreedListDialogPage extends StatefulWidget {
-  const BreedListDialogPage({Key? key}) : super(key: key);
+class BreedListDialog extends StatefulWidget {
+  const BreedListDialog({Key? key}) : super(key: key);
 
   @override
-  State<BreedListDialogPage> createState() => _BreedListDialogPageState();
+  State<BreedListDialog> createState() => _BreedListDialogState();
 }
 
-class _BreedListDialogPageState extends State<BreedListDialogPage> {
+class _BreedListDialogState extends State<BreedListDialog> {
   late HomeCubit cubit;
 
   @override
