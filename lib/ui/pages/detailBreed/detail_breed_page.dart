@@ -41,7 +41,7 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
           bloc: homeCubit,
           buildWhen: (previousState, state) {
             return previousState.loadListImg != state.loadListImg ||
-                previousState.isLoading != state.isLoading;
+                previousState.isLoadMore != state.isLoadMore;
           },
           builder: (context, state) {
             if (state.getImg) {
@@ -84,7 +84,7 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
                         ),
                       ),
                     ),
-                    state.isLoading == true
+                    state.isLoadMore == true
                         ? Container(
                             padding: const EdgeInsets.only(bottom: 16),
                             alignment: Alignment.center,

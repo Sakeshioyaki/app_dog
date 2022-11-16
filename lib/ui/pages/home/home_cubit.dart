@@ -92,8 +92,8 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadMore() async {
-    if (state.isLoading == false) {
-      emit(state.copyWith(isLoading: true));
+    if (state.isLoadMore == false) {
+      emit(state.copyWith(isLoadMore: true));
       updatePage();
       List<Breed> breedList = [];
       state.indexBreedChooseList?.forEach((e) {
@@ -118,7 +118,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
       listImg = listImg + state.breedsImgList;
-      emit(state.copyWith(breedsImgList: listImg, isLoading: false));
+      emit(state.copyWith(breedsImgList: listImg, isLoadMore: false));
     }
   }
 
@@ -133,6 +133,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   bool getLoading() {
-    return state.isLoading ?? false;
+    return state.isLoadMore ?? false;
   }
 }

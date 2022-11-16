@@ -6,7 +6,7 @@ class HomeState extends Equatable {
   final LoadStatus loadListBreeds;
   final List<Breed>? breedsList;
   final bool? isSearching;
-  final bool? isLoading;
+  final bool? isLoadMore;
   final String? textSearch;
   final List<int>? indexBreedChooseList;
 
@@ -26,7 +26,7 @@ class HomeState extends Equatable {
     this.breedsImgList = const [],
     this.loadListImg = LoadStatus.initial,
     this.getImg = false,
-    this.isLoading = false,
+    this.isLoadMore = false,
   });
 
   @override
@@ -41,7 +41,7 @@ class HomeState extends Equatable {
         breedsImgList,
         loadListImg,
         getImg,
-        isLoading,
+        isLoadMore,
       ];
 
   HomeState copyWith({
@@ -54,7 +54,7 @@ class HomeState extends Equatable {
     List<dynamic>? breedsImgList,
     int? page,
     bool? getImg,
-    bool? isLoading,
+    bool? isLoadMore,
   }) {
     return HomeState(
       loadListBreeds: loadListBreeds ?? this.loadListBreeds,
@@ -66,7 +66,7 @@ class HomeState extends Equatable {
       breedsImgList: breedsImgList ?? this.breedsImgList,
       page: page ?? this.page,
       getImg: getImg ?? this.getImg,
-      isLoading: isLoading ?? this.isLoading,
+      isLoadMore: isLoadMore ?? this.isLoadMore,
     );
   }
 }
