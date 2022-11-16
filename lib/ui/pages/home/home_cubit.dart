@@ -26,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
       emit(
         state.copyWith(
           loadListBreeds: LoadStatus.success,
-          listBreeds: list,
+          breedsList: list,
         ),
       );
     } catch (e) {
@@ -47,10 +47,10 @@ class HomeCubit extends Cubit<HomeState> {
     if (state.indexBreedChooseList?.contains(index) == true) {
       List<int> list = [...?state.indexBreedChooseList];
       list.remove(index);
-      emit(state.copyWith(listBreedsChoose: list));
+      emit(state.copyWith(indexBreedChooseList: list));
     } else {
       List<int> list = [...?state.indexBreedChooseList, index];
-      emit(state.copyWith(listBreedsChoose: list));
+      emit(state.copyWith(indexBreedChooseList: list));
     }
   }
 
@@ -82,7 +82,7 @@ class HomeCubit extends Cubit<HomeState> {
       emit(
         state.copyWith(
           loadListImg: LoadStatus.success,
-          listBreedsImg: listImg,
+          breedsImgList: listImg,
         ),
       );
     } catch (e) {
@@ -95,13 +95,13 @@ class HomeCubit extends Cubit<HomeState> {
     if (state.isLoading == false) {
       emit(state.copyWith(isLoading: true));
       updatePage();
-      List<Breed> listBreeds = [];
+      List<Breed> breedList = [];
       state.indexBreedChooseList?.forEach((e) {
-        listBreeds.add(state.breedsList![e]);
+        breedList.add(state.breedsList![e]);
       });
-      int number = 10 ~/ listBreeds.length;
+      int number = 10 ~/ breedList.length;
       List<BreedsDetail> result =
-          await dogRes.getListBreedsDetail(breeds: listBreeds);
+          await dogRes.getListBreedsDetail(breeds: breedList);
 
       List<dynamic> listImg = [];
       for (var e in result) {
@@ -118,7 +118,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
       listImg = listImg + state.breedsImgList;
-      emit(state.copyWith(listBreedsImg: listImg, isLoading: false));
+      emit(state.copyWith(breedsImgList: listImg, isLoading: false));
     }
   }
 

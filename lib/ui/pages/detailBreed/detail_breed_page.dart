@@ -40,8 +40,7 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
       body: BlocBuilder<HomeCubit, HomeState>(
           bloc: homeCubit,
           buildWhen: (previousState, state) {
-            return previousState.loadMore != state.loadMore ||
-                previousState.loadListImg != state.loadListImg ||
+            return previousState.loadListImg != state.loadListImg ||
                 previousState.isLoading != state.isLoading;
           },
           builder: (context, state) {
@@ -61,6 +60,7 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
                           return homeCubit.fetchListBreedsImg();
                         },
                         child: GridView.builder(
+                          padding: const EdgeInsets.only(top: 0),
                           controller: controller,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(

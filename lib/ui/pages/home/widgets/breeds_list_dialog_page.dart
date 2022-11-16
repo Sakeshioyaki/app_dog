@@ -113,7 +113,6 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: GestureDetector(
             onTap: () {
-              print('tap tap ');
               cubit.setIndexBreed(index);
             },
             child: Container(
