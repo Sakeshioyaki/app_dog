@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dog_app/common/app_text_styles.dart';
 import 'package:dog_app/models/enums/load_status.dart';
 import 'package:dog_app/ui/pages/home/home_cubit.dart';
@@ -72,11 +73,33 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
                               margin: const EdgeInsets.all(5),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  state.breedsImgList[index],
-                                  fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.height,
+                                child: CachedNetworkImage(
+                                  // Image.network(
+                                  // state.breedsImgList[index],
+                                  // fit: BoxFit.cover,
+                                  // width: MediaQuery.of(context).size.width,
+                                  // height: MediaQuery.of(context).size.height,
+                                  // )
+                                  imageUrl: state.breedsImgList[index],
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => Center(
+                                    child: Image.asset(
+                                      'assets/loading_gif.gif',
+                                      height: 60,
+                                      width: 60,
+                                    ),
+                                  ),
+
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                               ),
                             );
