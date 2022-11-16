@@ -19,8 +19,14 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
   @override
   void initState() {
     super.initState();
-
     homeCubit = context.read<HomeCubit>();
+    controller.addListener(
+      () {
+        if (controller.offset - controller.position.maxScrollExtent > 20) {
+          homeCubit.loadMore();
+        }
+      },
+    );
   }
 
   @override
@@ -33,17 +39,12 @@ class _DetailBreedPageState extends State<DetailBreedPage> {
     return Scaffold(
       body: BlocBuilder<HomeCubit, HomeState>(
           bloc: homeCubit,
-          // buildWhen: (previousState, state) {},
+          buildWhen: (previousState, state) {
+            return previousState.loadMore != state.loadMore ||
+                previousState.loadListImg != state.loadListImg ||
+                previousState.isLoading != state.isLoading;
+          },
           builder: (context, state) {
-            controller.addListener(
-              () {
-                if (controller.offset - controller.position.maxScrollExtent >
-                    20) {
-                  print('calll loadmore');
-                  homeCubit.loadMore();
-                }
-              },
-            );
             if (state.getImg) {
               if (state.loadListImg == LoadStatus.failure) {
                 return const Text('faild to load');
