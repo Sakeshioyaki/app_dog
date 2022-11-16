@@ -3,4 +3,5 @@ class AppImages {
   static const icLogo = 'assets/images/happy.png';
   static const imgSplash = 'assets/images/happy.png';
   static const coverDog = 'assets/images/cover_dog.jpg';
+  static const loadingGif = 'assets/loading_gif.gif';
 }
