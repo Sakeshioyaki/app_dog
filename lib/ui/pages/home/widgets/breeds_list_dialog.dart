@@ -62,7 +62,7 @@ class _BreedListDialogState extends State<BreedListDialog> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          if (state.getImg == false) cubit.setGetIMg();
+                          if (state.getImg == false) cubit.setGetImg();
                           cubit.fetchListBreedsImg();
                           Navigator.pop(context);
                         },

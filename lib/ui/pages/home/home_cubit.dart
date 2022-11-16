@@ -117,7 +117,7 @@ class HomeCubit extends Cubit<HomeState> {
         }
       }
 
-      listImg = listImg + state.breedsImgList;
+      listImg = state.breedsImgList + listImg;
       emit(state.copyWith(breedsImgList: listImg, isLoadMore: false));
     }
   }
@@ -127,7 +127,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(page: pageN));
   }
 
-  void setGetIMg() {
+  void setGetImg() {
     bool need = state.getImg ? false : true;
     emit(state.copyWith(getImg: need));
   }
