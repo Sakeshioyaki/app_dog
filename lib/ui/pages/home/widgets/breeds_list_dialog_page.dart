@@ -92,7 +92,7 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
                 return Expanded(
                   child: state.isSearching ?? false
                       ? buildListSearch(
-                          state.listBreeds ?? [],
+                          state.breedsList ?? [],
                           state.textSearch ?? '',
                         )
                       : buildListBreeds(state),
@@ -107,13 +107,14 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
 
   Widget buildListBreeds(HomeState state) {
     return ListView.separated(
-      itemCount: state.listBreeds?.length ?? 0,
+      itemCount: state.breedsList?.length ?? 0,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: GestureDetector(
             onTap: () {
-              cubit.setChooseBreed(index);
+              print('tap tap ');
+              cubit.setIndexBreed(index);
             },
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -138,12 +139,12 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
                       ),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        state.listBreeds?[index].key ?? '',
+                        state.breedsList?[index].key ?? '',
                         style: AppTextStyle.blackS24,
                       ),
                     ),
                   ),
-                  state.listBreedsChoose?.contains(index) ?? false
+                  state.indexBreedChooseList?.contains(index) ?? false
                       ? const Icon(
                           Icons.check_box,
                           size: 25,
@@ -228,7 +229,7 @@ class _BreedListDialogPageState extends State<BreedListDialogPage> {
         var breed = resultSearch[index];
         return GestureDetector(
           onTap: () {
-            cubit.setChooseBreed(index);
+            cubit.setIndexBreed(index);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

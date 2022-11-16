@@ -5,14 +5,14 @@ import 'package:equatable/equatable.dart';
 class HomeState extends Equatable {
   final LoadStatus loadListBreeds;
   final LoadStatus loadMore;
-  final List<Breed>? listBreeds;
+  final List<Breed>? breedsList;
   final bool? isSearching;
-  final bool? loading;
+  final bool? isLoading;
   final String? textSearch;
-  final List<int>? listBreedsChoose;
+  final List<int>? indexBreedChooseList;
 
   final LoadStatus loadListImg;
-  final List<dynamic> listBreedsImg;
+  final List<dynamic> breedsImgList;
   final int page;
 
   final bool getImg;
@@ -20,15 +20,15 @@ class HomeState extends Equatable {
   const HomeState({
     this.loadListBreeds = LoadStatus.initial,
     this.loadMore = LoadStatus.initial,
-    this.listBreeds = const [],
-    this.listBreedsChoose = const [],
+    this.breedsList = const [],
+    this.indexBreedChooseList = const [],
     this.isSearching = false,
     this.textSearch = '',
     this.page = 1,
-    this.listBreedsImg = const [],
+    this.breedsImgList = const [],
     this.loadListImg = LoadStatus.initial,
     this.getImg = false,
-    this.loading = false,
+    this.isLoading = false,
   });
 
   @override
@@ -36,15 +36,15 @@ class HomeState extends Equatable {
         loadMore,
         loadListBreeds,
         loadListImg,
-        listBreedsChoose,
-        listBreeds,
+        indexBreedChooseList,
+        breedsList,
         isSearching,
         textSearch,
         page,
-        listBreedsImg,
+        breedsImgList,
         loadListImg,
         getImg,
-        loading,
+        isLoading,
       ];
 
   HomeState copyWith({
@@ -58,20 +58,20 @@ class HomeState extends Equatable {
     List<dynamic>? listBreedsImg,
     int? page,
     bool? getImg,
-    bool? loading,
+    bool? isLoading,
   }) {
     return HomeState(
       loadListBreeds: loadListBreeds ?? this.loadListBreeds,
       loadMore: loadMore ?? this.loadMore,
       loadListImg: loadListImg ?? this.loadListImg,
-      listBreeds: listBreeds ?? this.listBreeds,
-      listBreedsChoose: listBreedsChoose ?? this.listBreedsChoose,
+      breedsList: listBreeds ?? this.breedsList,
+      indexBreedChooseList: listBreedsChoose ?? this.indexBreedChooseList,
       isSearching: isSearching ?? this.isSearching,
       textSearch: textSearch ?? this.textSearch,
-      listBreedsImg: listBreedsImg ?? this.listBreedsImg,
+      breedsImgList: listBreedsImg ?? this.breedsImgList,
       page: page ?? this.page,
       getImg: getImg ?? this.getImg,
-      loading: loading ?? this.loading,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

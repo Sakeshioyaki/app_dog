@@ -43,9 +43,15 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(textSearch: value));
   }
 
-  void setChooseBreed(int index) {
-    List<int> list = [...?state.listBreedsChoose, index];
-    emit(state.copyWith(listBreedsChoose: list));
+  void setIndexBreed(int index) {
+    if (state.indexBreedChooseList?.contains(index) == true) {
+      List<int> list = [...?state.indexBreedChooseList];
+      list.remove(index);
+      emit(state.copyWith(listBreedsChoose: list));
+    } else {
+      List<int> list = [...?state.indexBreedChooseList, index];
+      emit(state.copyWith(listBreedsChoose: list));
+    }
   }
 
   void fetchListBreedsImg() async {
@@ -54,8 +60,8 @@ class HomeCubit extends Cubit<HomeState> {
     ));
     try {
       List<Breed> listBreeds = [];
-      state.listBreedsChoose?.forEach((e) {
-        listBreeds.add(state.listBreeds![e]);
+      state.indexBreedChooseList?.forEach((e) {
+        listBreeds.add(state.breedsList![e]);
       });
       int number = 10 ~/ listBreeds.length;
       List<BreedsDetail> result =
@@ -86,11 +92,12 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadMore() async {
-    if (state.loading == false) {
-      emit(state.copyWith(loading: true));
+    if (state.isLoading == false) {
+      emit(state.copyWith(isLoading: true));
+      updatePage();
       List<Breed> listBreeds = [];
-      state.listBreedsChoose?.forEach((e) {
-        listBreeds.add(state.listBreeds![e]);
+      state.indexBreedChooseList?.forEach((e) {
+        listBreeds.add(state.breedsList![e]);
       });
       int number = 10 ~/ listBreeds.length;
       List<BreedsDetail> result =
@@ -110,8 +117,8 @@ class HomeCubit extends Cubit<HomeState> {
         }
       }
 
-      listImg = listImg + state.listBreedsImg;
-      emit(state.copyWith(listBreedsImg: listImg, loading: false));
+      listImg = listImg + state.breedsImgList;
+      emit(state.copyWith(listBreedsImg: listImg, isLoading: false));
     }
   }
 
@@ -126,6 +133,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   bool getLoading() {
-    return state.loading ?? false;
+    return state.isLoading ?? false;
   }
 }
